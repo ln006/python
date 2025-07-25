@@ -1,6 +1,6 @@
 # main.py
 import customtkinter as ctk
-from views.accueil import AccueilFrame, MainClient
+from views.accueil import AccueilFrame, MainClient, Connection,FormulaireFrame
 from models.database import init_db
 
 ctk.set_appearance_mode("System")
@@ -13,7 +13,7 @@ class App(ctk.CTk):
         self.geometry("900x600")
         init_db()
         self.current_frame = None
-        self.switch_frame(AccueilFrame)
+        self.switch_frame(FormulaireFrame)
 
     def switch_frame(self, frame_class):
         if self.current_frame is not None:
