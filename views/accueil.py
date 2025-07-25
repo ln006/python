@@ -1,3 +1,4 @@
+from os.path import expanduser
 from tkinter import filedialog, messagebox
 
 import customtkinter as ctk
@@ -11,17 +12,20 @@ from .liste_candidats import ListeCandidatsFrame
 class AccueilFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
+        self.Frame =  ctk.CTkFrame(self,fg_color="blue")
+        self.Frame.pack(pady=10)
+        label = ctk.CTkLabel(self.Frame, text="Bienvenue dans notre plateforme de gestion des bourses", font=("Arial", 30, "bold"))
+        label.pack(pady=90)
+        label2 = ctk.CTkLabel(self,text="Faites votre choix pour un avenir plus sur !",font=("Arial", 24))
+        label2.pack(pady=40)
 
-        label = ctk.CTkLabel(self, text="Bienvenue dans le Gestionnaire de Bourse", font=("Arial", 24))
-        label.pack(pady=140)
-
-        btn_formulaire = ctk.CTkButton(self, text="Se connecter",
+        btn_formulaire = ctk.CTkButton(self, text="S'ENRENGISTRER",font=("Arial", 10, "bold"),
                                        command=lambda: master.switch_frame(Connection))
-        btn_formulaire.pack(pady=20)
+        btn_formulaire.pack(side="left",pady=20,padx=150)
 
-        btn_formulaire = ctk.CTkButton(self, text="Formulaire",
-                                       command=lambda: master.switch_frame(ListeCandidatsFrame))
-        btn_formulaire.pack(pady=20)
+        btn_formulaire = ctk.CTkButton(self, text="SE CONNECTER",font=("Arial", 10, "bold"),
+                                       command=lambda: master.switch_frame(MainClient))
+        btn_formulaire.pack(side="right",pady=20,padx=180)
 
 
 #page de connection
@@ -36,7 +40,7 @@ class Connection(ctk.CTkFrame):
         self.ent_nom.pack(padx=10)
 
         self.nom = ctk.CTkLabel(self.Main_frame, text="Mot de passe")
-        self.nom.pack(pady=0)
+        self.nom.pack(pady=0,padx=10)
         self.ent_nom = ctk.CTkEntry(self.Main_frame, placeholder_text="Votre mot de passe", width=300)
         self.ent_nom.pack(padx=10)
 
@@ -100,37 +104,38 @@ class FormulaireFrame(ctk.CTkFrame):
 class MainClient(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
-
        # === COLONNE GAUCHE ===
         self.left = ctk.CTkFrame(self, fg_color="gray")
-        self.left.grid(row=0, column=0, sticky="nsew", padx=100, pady=100)
-        self.left.grid_rowconfigure(2, weight=1)
-
+        self.left.pack(side="left",padx=(10,40),pady=(25,15),expand=True)
+        self.master.geometry("900x600")
        # Zone de notifications
         notif_label = ctk.CTkLabel(self.left, text="NOTIFICATIONS", font=("Arial", 16, "bold"))
-        notif_label.pack(anchor="w", pady=(0, 10))
+        notif_label.pack(anchor="w", pady=(10, 10), padx=(10,30))
 
         self.notif_box = ctk.CTkFrame(self.left, fg_color="#E6E6E6", corner_radius=8)
-        self.notif_box.pack(fill="x", pady=(0, 20))
-        notif_text = ctk.CTkLabel(self.notif_box, text="informations personnelles du formulaire", text_color="black")
-        notif_text.pack(padx=10, pady=10)
+        self.notif_box.pack(fill="x", pady=(20, 60),padx=(10,130))
+        notif_text = ctk.CTkLabel(self.notif_box, text="NOM DU CANDIDAT ", text_color="black")
+        notif_text.pack(padx=1, pady=10)
+        notif_text = ctk.CTkLabel(self.notif_box, text="PRENOM DU CANDIDAT", text_color="black")
+        notif_text.pack(padx=1, pady=10)
+        notif_text = ctk.CTkLabel(self.notif_box, text="EMAIL", text_color="black")
+        notif_text.pack(padx=1, pady=10)
 
         # Liste de postulation
         self.postulation_box = ctk.CTkFrame(self.left, fg_color="#D9D9D9", corner_radius=8)
-        self.postulation_box.pack(fill="x", pady=(10, 0))
+        self.postulation_box.pack(fill="x", pady=(10, 50),padx=(10,40))
 
         self.post_title = ctk.CTkLabel(self.postulation_box, text="ETAT DE LA CANDIDATURE POUR LA BOURSE", text_color="black")
-        self.post_title.pack(anchor="w", padx=10, pady=(10, 2))
+        self.post_title.pack(anchor="w", padx=(10,5), pady=(10, 20))
 
-        bourse_label = ctk.CTkLabel(self.postulation_box, text="BOURSE DE CHINE", text_color="black")
-        bourse_label.pack(anchor="w", padx=10)
+        bourse_label = ctk.CTkLabel(self.postulation_box, text="BOURSE DE CHINE", text_color="black",bg_color="white")
+        bourse_label.pack(anchor="w", padx=(10,10))
 
-        status_label = ctk.CTkLabel(self.postulation_box, text="en attente", text_color="gray")
-        status_label.pack(anchor="e", padx=10, pady=(0, 10))
-
+        status_label = ctk.CTkLabel(self.postulation_box, text="En attente", text_color="gray")
+        status_label.pack(anchor="e", padx=10)
          # === COLONNE DROITE ===
         self.right = ctk.CTkFrame(self, fg_color="gray")
-        self.right.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
+        self.right.pack(side="right",padx=(20,10),pady=(20,10),expand=True)
 
 
         bourses = [
@@ -142,10 +147,13 @@ class MainClient(ctk.CTkFrame):
 
         for b in bourses:
           row = ctk.CTkFrame(self.right, fg_color="#D9D9D9", corner_radius=8)
-          row.pack(fill="x", pady=10)
+          row.pack(fill="x", pady=(20,20), padx=(100,30))
 
           lbl = ctk.CTkLabel(row, text=b, text_color="black")
-          lbl.pack(side="left", padx=10, pady=10)
+          lbl.pack(side="left", padx=20, pady=20)
 
           btn = ctk.CTkButton(row, text="POSTULER", width=100, fg_color="black", text_color="white")
           btn.pack(side="right", padx=10, pady=10)
+
+        self.btn_retour = ctk.CTkButton(self, text="retour", width=40, command=lambda: master.switch_frame(AccueilFrame))
+        self.btn_retour.place(x=10, y=10)
