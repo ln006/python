@@ -2,8 +2,8 @@ from os.path import expanduser
 from tkinter import filedialog, messagebox
 
 import customtkinter as ctk
-import self
-
+from tkcalendar import DateEntry
+from PIL import Image, ImageTk
 from controllers.gestion_formulaire import soumettre_candidat
 from .liste_candidats import ListeCandidatsFrame
 
@@ -33,19 +33,26 @@ class Connection(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
         self.Main_frame= ctk.CTkFrame(self)
-        self.Main_frame.pack(pady=100,padx=100)
-        self.nom = ctk.CTkLabel(self.Main_frame, text="Nom")
-        self.nom.pack(padx=0,)
+        self.Main_frame.pack(pady=(130,10),padx=(200,200))
+        self.Text = ctk.CTkLabel(self.Main_frame,text="S'ENRENGISTRER",font=("Arial", 20, "bold"),bg_color="white")
+        self.Text.pack(pady=(15,5),padx=(50,50))
+        self.nom = ctk.CTkLabel(self.Main_frame, text="NOM")
+        self.nom.pack(padx=(1,190),pady=(1,1))
         self.ent_nom = ctk.CTkEntry(self.Main_frame, placeholder_text="Entrer votre nom", width=300)
-        self.ent_nom.pack(padx=10)
+        self.ent_nom.pack(padx=(30,30),pady=(3,20))
 
-        self.nom = ctk.CTkLabel(self.Main_frame, text="Mot de passe")
-        self.nom.pack(pady=0,padx=10)
+        self.nom = ctk.CTkLabel(self.Main_frame, text="PRENOM")
+        self.nom.pack(pady=(1,1), padx=(1,190))
+        self.ent_nom = ctk.CTkEntry(self.Main_frame, placeholder_text="Votre prénom", width=300)
+        self.ent_nom.pack(padx=(30,30),pady=(3,20))
+
+        self.nom = ctk.CTkLabel(self.Main_frame, text="Mot de passe",)
+        self.nom.pack(pady=(1,1), padx=(1,190))
         self.ent_nom = ctk.CTkEntry(self.Main_frame, placeholder_text="Votre mot de passe", width=300)
-        self.ent_nom.pack(padx=10)
+        self.ent_nom.pack(padx=(30,30),pady=(3,20))
 
         self.bouton_connect = ctk.CTkButton(self.Main_frame, text="Se connecter")
-        self.bouton_connect.pack(pady=20)
+        self.bouton_connect.pack(pady=(30,30),padx=(10,10))
 
         self.btn_retour = ctk.CTkButton(self, text="retour",width=40, command=lambda: master.switch_frame(AccueilFrame))
         self.btn_retour.place(x=10, y=10)
@@ -60,21 +67,25 @@ class FormulaireFrame(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self, text="Formulaire de demande de bourse", font=("Arial", 20))
         self.label.pack(pady=20)
 
-        self.entry_nom = ctk.CTkEntry(self, placeholder_text="Nom complet")
+        self.btn_photo = ctk.CTkButton(self, text="Joindre une photo", command=self.choisir_photo)
+        self.btn_photo.pack(pady=10)
+
+        self.entry_nom = ctk.CTkEntry(self, placeholder_text="Nom complet",width=100)
         self.entry_nom.pack(pady=3)
 
-        self.entry_email = ctk.CTkEntry(self, placeholder_text="Email")
+        self.entry_email = ctk.CTkEntry(self, placeholder_text="Email",width=100)
         self.entry_email.pack(pady=10)
+        self.label = ctk.CTkLabel(self,text="Date de naissance",font=("Arial",15)).pack(pady=(1,1),padx=(1,10))
 
-        self.comboniveau = ctk.CTkOptionMenu(self, values=["Licence", "Master", "Doctorat"])
+        date_entry = DateEntry(self, width=16, background='darkblue', foreground='white', borderwidth=2, date_pattern='dd/mm/yyyy')
+        date_entry.pack(pady=5)
+
+        self.comboniveau = ctk.CTkOptionMenu(self, values=["Licence", "Master", "Doctorat","BAC"])
         self.comboniveau.set("Licence")
         self.comboniveau.pack(pady=10)
 
         self.txt_motivation = ctk.CTkTextbox(self, height=100, width=400)
         self.txt_motivation.pack(pady=10)
-
-        self.btn_photo = ctk.CTkButton(self, text="Joindre une photo", command=self.choisir_photo)
-        self.btn_photo.pack(pady=10)
 
         self.btn_submit = ctk.CTkButton(self, text="Soumettre", command=self.soumettre)
         self.btn_submit.pack(pady=20)
@@ -86,7 +97,13 @@ class FormulaireFrame(ctk.CTkFrame):
         path = filedialog.askopenfilename(filetypes=[("Images", "*.png *.jpg *.jpeg")])
         if path:
             self.photo_path = path
+            image = Image.open(path)
+            self.photo = ctk.CTkImage(light_image=image, size=(150, 150))
+
+
             messagebox.showinfo("Photo ajoutée", "Photo ajoutée avec succès")
+            label_photo = ctk.CTkLabel(self, image=self.photo, text="")
+            label_photo.pack(pady=(10,70),padx=(50,10))
 
     def soumettre(self):
         nom = self.entry_nom.get()
@@ -135,8 +152,7 @@ class MainClient(ctk.CTkFrame):
         status_label.pack(anchor="e", padx=10)
          # === COLONNE DROITE ===
         self.right = ctk.CTkFrame(self, fg_color="gray")
-        self.right.pack(side="right",padx=(20,10),pady=(20,10),expand=True)
-
+        self.right.pack(side="right",padx=(20,10),pady=(20,10),)
 
         bourses = [
         "BOURSE DE CHINE",

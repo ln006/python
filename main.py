@@ -13,7 +13,7 @@ class App(ctk.CTk):
         self.geometry("900x600")
         init_db()
         self.current_frame = None
-        self.switch_frame(AccueilFrame)
+        self.switch_frame(MainClient)
 
     def switch_frame(self, frame_class):
         if self.current_frame is not None:
