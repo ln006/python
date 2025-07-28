@@ -1,11 +1,11 @@
-from os.path import expanduser
+
 from tkinter import filedialog, messagebox
 
 import customtkinter as ctk
 from tkcalendar import DateEntry
-from PIL import Image, ImageTk
+from PIL import Image
 from controllers.gestion_formulaire import soumettre_candidat
-from .liste_candidats import ListeCandidatsFrame
+
 
 
 # Page d'acceuil de notre application
@@ -122,6 +122,11 @@ class FormulaireFrame(ctk.CTkFrame):
 
 
 class MainClient(ctk.CTkFrame):
+    def ajouter_labels(frame,bourses):
+        for i in bourses:
+            label = ctk.CTkLabel(frame, text=bourses[i+1], text_color="black", pady=10)
+            label.pack(fill="x", padx=10, pady=10)
+
     def __init__(self, master):
         super().__init__(master)
         # === COLONNE GAUCHE ===
@@ -167,7 +172,7 @@ class MainClient(ctk.CTkFrame):
         canvas.pack(side="right", fill="both", expand=True)
         self.scrollable_frame.pack(side="right", fill="y")
 
-        bourses = [
+        self.bourses = [
             "BOURSE DE CHINE",
             "BOURSE DE LA FINLANDE",
             "BOURSE DE USA",
@@ -176,8 +181,5 @@ class MainClient(ctk.CTkFrame):
         self.btn_retour = ctk.CTkButton(self, text="retour", width=40,
                                         command=lambda: master.switch_frame(AccueilFrame))
         self.btn_retour.place(x=10, y=10)
+        self.ajouter_labels(self.scrollable_frame,)
 
-    def ajouter_labels(frame, nombre):
-        for i in range(nombre):
-            label = ctk.CTkLabel(frame, text=f"", text_color="black", pady=10)
-            label.pack(fill="x", padx=10, pady=10)
