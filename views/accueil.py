@@ -1,4 +1,4 @@
-
+from doctest import master
 from tkinter import filedialog, messagebox
 
 import customtkinter as ctk
@@ -122,9 +122,9 @@ class FormulaireFrame(ctk.CTkFrame):
 
 
 class MainClient(ctk.CTkFrame):
-    def ajouter_labels(frame,bourses):
-        for i in bourses:
-            label = ctk.CTkLabel(frame, text=bourses[i+1], text_color="black", pady=10)
+    def ajouter_labels(self,frame,bourses):
+        for bourse in bourses:
+            label = ctk.CTkLabel(frame, text=f"{bourse}", text_color="black", pady=10)
             label.pack(fill="x", padx=10, pady=10)
 
     def __init__(self, master):
@@ -177,9 +177,19 @@ class MainClient(ctk.CTkFrame):
             "BOURSE DE LA FINLANDE",
             "BOURSE DE USA",
             "BOURSE FRANCE"
+            "BOURSE FRANCE"
+            "BOURSE FRANCE"
+            "BOURSE FRANCE"
+            "BOURSE FRANCE"
+            "BOURSE FRANCE"
+            "BOURSE FRANCE"
+            "BOURSE FRANCE"
+            "BOURSE FRANCE"
+            "BOURSE FRANCE"
+            "BOURSE DE LA FINLANDE",
         ]
         self.btn_retour = ctk.CTkButton(self, text="retour", width=40,
                                         command=lambda: master.switch_frame(AccueilFrame))
         self.btn_retour.place(x=10, y=10)
-        self.ajouter_labels(self.scrollable_frame,)
+        self.ajouter_labels(self.scrollable_frame,self.bourses)
 
